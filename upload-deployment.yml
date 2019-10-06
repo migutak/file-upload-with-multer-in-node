@@ -16,10 +16,13 @@ spec:
     spec:
       containers:
       - name: uploadsapp
-        image: migutak/uploads:1.0.0
+        image: migutak/upload:1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
+        env:
+        - name: MONGODB_CONNECTIONSTRING
+          value: mongodb://192.168.0.26:2701
         resources:
           requests:
             memory: "64Mi"
@@ -31,30 +34,10 @@ spec:
         - mountPath: /usr/src/app/uploads
           name: uploads-volume
 
-      - name: mongo
-        image: mongo:4.0.4
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-        volumeMounts:
-        - mountPath: /data/db
-          name: mongodb-volume
-
       volumes:
       - name: uploads-volume
         hostPath:
           path: /tmp/demands
-          type: DirectoryOrCreate
-      - name: mongodb-volume
-        hostPath:
-          path: /tmp/mongodb
           type: DirectoryOrCreate
 ---
 apiVersion: v1

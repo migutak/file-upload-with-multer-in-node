@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 const MongoClient = require('mongodb').MongoClient
 ObjectId = require('mongodb').ObjectId
 
-const myurl = 'mongodb://mongo:27017';
+const myurl = process.env.MONGODB_CONNECTIONSTRING;
 
 
 var storage = multer.diskStorage({
@@ -22,13 +22,13 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage })
 
-MongoClient.connect(myurl, (err, client) => {
+/*MongoClient.connect(myurl, (err, client) => {
   if (err) return console.log(err)
   db = client.db('test') 
   app.listen(3000, () => {
     console.log('listening on 3000')
   })
-})
+})*/
 
 app.get('/',function(req,res){
   res.sendFile(__dirname + '/index.html');
@@ -114,4 +114,6 @@ db.collection('mycollection').findOne({'_id': ObjectId(filename) }, (err, result
   })
 })
 
-
+app.listen(3000, () => {
+  console.log('.... listening on 3000')
+})

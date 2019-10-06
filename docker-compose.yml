@@ -7,12 +7,13 @@ services:
     restart: unless-stopped
     tty: true
     environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
+      MONGODB_CONNECTIONSTRING: mongodb://192.168.0.26:27017
     volumes:
       - /tmp/demands:/usr/src/app/uploads
     ports:
       - "3000:3000"
+    depends_on:
+      - mongo
     networks:
       - app-network
 
@@ -24,11 +25,6 @@ services:
     tty: true
     ports:
       - "27017-27019:27017-27019"
-    environment:
-      MONGO_DATABASE: test
-      MONGO_PASSWORD: root
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mongo
     volumes:
       - /tmp/mongodb:/data/db
     networks:
