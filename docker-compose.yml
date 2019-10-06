@@ -1,0 +1,40 @@
+version: "3"
+services:
+  #Upload Service
+  uploadsapp:
+    image: migutak/upload:1.0.0
+    container_name: uploadsapp
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    volumes:
+      - /tmp/demands:/usr/src/app/uploads
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  #Mongo Service
+  mongo:
+    image: mongo:4.0.4
+    container_name: mongo
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "27017-27019:27017-27019"
+    environment:
+      MONGO_DATABASE: test
+      MONGO_PASSWORD: root
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mongo
+    volumes:
+      - /tmp/mongodb:/data/db
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge

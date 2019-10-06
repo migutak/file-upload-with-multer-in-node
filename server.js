@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 const MongoClient = require('mongodb').MongoClient
 ObjectId = require('mongodb').ObjectId
 
-const myurl = 'mongodb://localhost:27017';
+const myurl = 'mongodb://mongo:27017';
 
 
 var storage = multer.diskStorage({
@@ -16,7 +16,7 @@ var storage = multer.diskStorage({
     cb(null, 'uploads')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
+    cb(null, Date.now() + '_' + file.originalname)
   }
 })
 
